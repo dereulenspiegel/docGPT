@@ -5,7 +5,7 @@ from config import EMBEDDINGS_MODEL_NAME, VECTOR_STORE_PATH
 
 vector_store_path = VECTOR_STORE_PATH
 embeddings_model_name = EMBEDDINGS_MODEL_NAME
-llm_model_path = "models/ggml-vicuna-13b-1.1-q4_2.bin"
+llm_model_path = "models/ggml-nous-gpt4-vicuna-13b.bin"
 
 def main():
     vector_store = build_vector_store(vector_store_path, HuggingFaceEmbeddings(model_name=embeddings_model_name))
