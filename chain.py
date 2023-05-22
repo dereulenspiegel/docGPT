@@ -14,8 +14,15 @@ from config import CHROMA_SETTINGS
 from os.path import basename
 
 def build_chain(llm: LLM, vector_store: VectorStore,
-                 memory: BaseMemory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)) -> BaseRetriever:
-    qa = ConversationalRetrievalChain.from_llm(llm=llm, retriever=vector_store.as_retriever(), memory=memory, verbose=True)
+                 memory: BaseMemory = ConversationBufferMemory(
+    memory_key="chat_history", 
+    return_messages=True, 
+    output_key='answer')) -> BaseRetriever:
+    qa = ConversationalRetrievalChain.from_llm(llm=llm, 
+                                               retriever=vector_store.as_retriever(), 
+                                               memory=memory, 
+                                               verbose=True,
+                                               return_source_documents=True)
     return qa
 
 def build_llm(model_path: str, n_ctx = 1000, 
