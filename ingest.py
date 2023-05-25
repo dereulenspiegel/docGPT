@@ -77,8 +77,8 @@ def load_url(source_url: str, is_sitemap: bool) -> List[Document]:
 def load_from_confluence(source_url: str) -> List[Document]:
     username = os.getenv('CONFLUENCE_USER')
     token = os.getenv('CONFLUENCE_TOKEN')
-    loader = ConfluenceLoader(url=source_url, username=username, api_key=token, include_attachments=True)
-    return loader.load()
+    loader = ConfluenceLoader(url=source_url, username=username, api_key=token)
+    return loader.load(include_attachments=True, space_key='SD')
 
 def ingest():    
     chunk_size = 500
