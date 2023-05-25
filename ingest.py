@@ -18,6 +18,8 @@ from langchain.document_loaders import (
     UnstructuredWordDocumentLoader,
     SitemapLoader,
     SeleniumURLLoader,
+    ConfluenceLoader
+    
 )
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -72,6 +74,12 @@ def load_url(source_url: str, is_sitemap: bool) -> List[Document]:
         loader = SeleniumURLLoader(urls=[source_url])
     return loader.load()
 
+def load_from_confluence(source_url: str) -> List[Document]:
+    username = os.getenv('CONFLUENCE_USER')
+    token = os.getenv('CONFLUENCE_TOKEN')
+    loader = ConfluenceLoader(url=source_url, username=username, api_key=token)
+    return loader.load(include_attachments=True, space_key='SD')
+
 def ingest():    
     chunk_size = 500
     chunk_overlap = 50
@@ -79,10 +87,14 @@ def ingest():
     parser = argparse.ArgumentParser("ingest")
     parser.add_argument('target')
     parser.add_argument('-s', '--sitemap', action='store_true')
+    parser.add_argument('-c', '--confluence', action='store_true')
     args = parser.parse_args()
     if args.target.startswith('http'):
         print("Loading from url")
-        documents = load_url(args.target, args.sitemap)
+        if args.confluence:
+            documents = load_from_confluence(args.target)
+        else:
+            documents = load_url(args.target, args.sitemap)
     else:
         print(f"Loading documents from {args.target}")
         documents = load_documents(args.target)
