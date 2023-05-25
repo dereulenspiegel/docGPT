@@ -81,8 +81,8 @@ def load_from_confluence(source_url: str) -> List[Document]:
     return loader.load(include_attachments=True, space_key='SD')
 
 def ingest():    
-    chunk_size = 500
-    chunk_overlap = 50
+    chunk_size = 1000
+    chunk_overlap = 100
 
     parser = argparse.ArgumentParser("ingest")
     parser.add_argument('target')
