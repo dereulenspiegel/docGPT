@@ -6,3 +6,4 @@ include
 lib
 models
 share
+.env
